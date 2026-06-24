@@ -3,8 +3,10 @@ import { PlusOutlined } from '@ant-design/icons';
 import { Space, Table as AntTable, Button } from 'antd';
 import type { TableProps } from 'antd';
 import Link from 'next/link';
+import { useState } from 'react';
+import AddModal from './AddModal';
 
-interface DataType {
+export interface DataType {
   key: string;
   count: number;
   coinSign: string;
@@ -15,54 +17,7 @@ interface DataType {
   price: number;
 }
 
-export const columns: TableProps<DataType>['columns'] = [
-  {
-    title: 'No.',
-    dataIndex: 'count',
-    key: 'count',
-  },
-  {
-    title: '',
-    dataIndex: 'coinSign',
-    key: 'coinSign',
-  },
-  {
-    title: 'Name',
-    dataIndex: 'coinName',
-    key: 'coinName',
-  },
-  {
-    title: 'VWAP',
-    dataIndex: 'vwap',
-    key: 'vwap',
-  },
-  {
-    title: 'Change',
-    dataIndex: 'change',
-    key: 'change',
-  },
-  {
-    title: 'Market Cap',
-    dataIndex: 'marketCap',
-    key: 'marketCap',
-  },
-  {
-    title: 'Price',
-    dataIndex: 'price',
-    key: 'price',
-  },
-  {
-    title: '',
-    key: 'addButton',
-    render: (_, record) => (
-        <Button
-        type="primary"
-        icon={<PlusOutlined />}
-        onClick={(e) => {e.stopPropagation(); console.log(record)}}
-      />
-    ),
-  },
-];
+export 
 
 const data: DataType[] = [
   {
@@ -159,7 +114,68 @@ const data: DataType[] = [
 
 export default function Table({
   dataSource = data,
-  columns: tableColumns = columns,
 }: TableProps<DataType>) {
-  return <AntTable dataSource={dataSource} columns={tableColumns} />;
+
+    const [openAddModal, setOpenAddModal] = useState(false);
+    const [coinData, setCoinData] = useState<DataType | null>(null);
+    const handleAddClick = (record: DataType) => {
+        setCoinData(record);
+        setOpenAddModal(true);
+    }
+
+    const columns: TableProps<DataType>['columns'] = [
+        {
+          title: 'No.',
+          dataIndex: 'count',
+          key: 'count',
+        },
+        {
+          title: '',
+          dataIndex: 'coinSign',
+          key: 'coinSign',
+        },
+        {
+          title: 'Name',
+          dataIndex: 'coinName',
+          key: 'coinName',
+        },
+        {
+          title: 'VWAP',
+          dataIndex: 'vwap',
+          key: 'vwap',
+        },
+        {
+          title: 'Change',
+          dataIndex: 'change',
+          key: 'change',
+        },
+        {
+          title: 'Market Cap',
+          dataIndex: 'marketCap',
+          key: 'marketCap',
+        },
+        {
+          title: 'Price',
+          dataIndex: 'price',
+          key: 'price',
+        },
+        {
+          title: '',
+          key: 'addButton',
+          render: (_, record) => (
+              <Button
+              type="primary"
+              icon={<PlusOutlined />}
+              onClick={(e) => {e.stopPropagation();
+                   handleAddClick(record);
+              }}
+            />
+          ),
+        },
+      ];
+  return <>
+    <AntTable dataSource={dataSource} columns={columns} />
+    <AddModal open={openAddModal} onClose={() => setOpenAddModal(false)} coinData={coinData}/>
+  </>;
 }
+
