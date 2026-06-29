@@ -1,6 +1,6 @@
 'use client';
 
-import { Modal } from "antd";
+import { Form, Input, Modal } from "antd";
 import { DataType } from "./Table";
 
 interface AddModalProps {
@@ -10,5 +10,10 @@ interface AddModalProps {
 }
 
 export default function AddModal({ open, onClose, coinData }: AddModalProps) {
-  return <Modal open={open} onCancel={onClose} title={coinData?.coinName}/>;
+  return <Modal open={open} onCancel={onClose} title={'Add ' + coinData?.coinName}>
+    <Form.Item name="coinName" label="Coin quantity">
+      <Input />
+    </Form.Item>
+  </Modal>
+  ;
 }
