@@ -1,8 +1,7 @@
 'use client';
 import { PlusOutlined } from '@ant-design/icons';
-import { Space, Table as AntTable, Button } from 'antd';
+import { Table as AntTable, Button } from 'antd';
 import type { TableProps } from 'antd';
-import Link from 'next/link';
 import { useState } from 'react';
 import AddModal from './AddModal';
 
